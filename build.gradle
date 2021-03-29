@@ -1,0 +1,64 @@
+plugins {
+    id "com.github.spotbugs" version "4.2.0" apply false
+    id 'java-library'
+    id 'idea'
+}
+
+group "com.examples"
+
+repositories {
+    jcenter()
+}
+
+idea {
+    module {
+        outputDir = file('build/classes/java/main')
+        testOutputDir = file('build/classes/java/test')
+        // inheritOutputDirs = true
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        compileJava.options.compilerArgs.addAll(["--release", "8"])
+    }
+}
+
+test {
+    doFirst {
+        if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+            jvmArgs = [
+                    '--add-opens', "java.base/jdk.internal.loader=ALL-UNNAMED"
+            ]
+        }
+    }
+
+    useTestNG() {
+        // suiteXmlFiles << new File(rootDir, "testng.xml") //This is how to add custom testng.xml
+    }
+
+    testLogging {
+        showStandardStreams = true
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+
+compileJava {
+    options.compilerArgs << "-proc:none" << "-Xlint:all,-options,-static" << "-Werror"
+}
+
+compileTestJava {
+    options.compilerArgs << "-proc:none" << "-Xlint:all,-options,-static" << "-Werror"
+}
+
+apply from: file("${rootProject.projectDir}/tools/gradle/java-formatter.gradle")
+
+dependencies {
+    testImplementation("org.testng:testng:7.4.0") {
+        exclude group: "junit", module: "junit"
+    }
+}

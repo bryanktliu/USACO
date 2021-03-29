@@ -1,0 +1,17 @@
+.gradle
+.DS_Store
+.idea
+*.iml
+build
+libs
+*.gz
+*.params
+*.zip
+*.jar
+*.so
+*.dylib
+*.dll
+*.class
+
+
+
