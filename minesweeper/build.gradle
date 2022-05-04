@@ -1,0 +1,20 @@
+plugins {
+    id 'application'
+}
+
+group "com.examples"
+
+repositories {
+    jcenter()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    testImplementation("org.testng:testng:7.4.0") {
+        exclude group: "junit", module: "junit"
+    }
+}

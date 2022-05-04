@@ -1,1 +1,3 @@
+include ':USACO'
+include ':minesweeper'
 
